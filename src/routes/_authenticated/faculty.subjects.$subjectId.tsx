@@ -122,7 +122,7 @@ function SubjectDetail() {
             ? `${subject.data.code}${subject.data.department ? ` · ${subject.data.department}` : ""}${
                 subject.data.semester ? ` · ${subject.data.semester}` : ""
               }`
-            : undefined
+            : ""
         }
       />
 

@@ -16,6 +16,7 @@ import { Route as AuthenticatedFacultyRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedStudentRouteImport } from './routes/_authenticated/student'
 import { Route as AuthenticatedFacultyIndexRouteImport } from './routes/_authenticated/faculty.index'
 import { Route as AuthenticatedFacultySubjectsIndexRouteImport } from './routes/_authenticated/faculty.subjects.index'
+import { Route as AuthenticatedFacultySubjectsSubjectIdRouteImport } from './routes/_authenticated/faculty.subjects.$subjectId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,6 +54,12 @@ const AuthenticatedFacultySubjectsIndexRoute =
     path: '/subjects/',
     getParentRoute: () => AuthenticatedFacultyRoute,
   } as any)
+const AuthenticatedFacultySubjectsSubjectIdRoute =
+  AuthenticatedFacultySubjectsSubjectIdRouteImport.update({
+    id: '/subjects/$subjectId',
+    path: '/subjects/$subjectId',
+    getParentRoute: () => AuthenticatedFacultyRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/faculty': typeof AuthenticatedFacultyRouteWithChildren
   '/student': typeof AuthenticatedStudentRoute
   '/faculty/': typeof AuthenticatedFacultyIndexRoute
+  '/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
   '/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/student': typeof AuthenticatedStudentRoute
   '/faculty': typeof AuthenticatedFacultyIndexRoute
+  '/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
   '/faculty/subjects': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -77,14 +86,27 @@ export interface FileRoutesById {
   '/_authenticated/faculty': typeof AuthenticatedFacultyRouteWithChildren
   '/_authenticated/student': typeof AuthenticatedStudentRoute
   '/_authenticated/faculty/': typeof AuthenticatedFacultyIndexRoute
+  '/_authenticated/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
   '/_authenticated/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/faculty' | '/student' | '/faculty/' | '/faculty/subjects/'
+    | '/'
+    | '/auth'
+    | '/faculty'
+    | '/student'
+    | '/faculty/'
+    | '/faculty/subjects/$subjectId'
+    | '/faculty/subjects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/student' | '/faculty' | '/faculty/subjects'
+  to:
+    | '/'
+    | '/auth'
+    | '/student'
+    | '/faculty'
+    | '/faculty/subjects/$subjectId'
+    | '/faculty/subjects'
   id:
     | '__root__'
     | '/'
@@ -93,6 +115,7 @@ export interface FileRouteTypes {
     | '/_authenticated/faculty'
     | '/_authenticated/student'
     | '/_authenticated/faculty/'
+    | '/_authenticated/faculty/subjects/$subjectId'
     | '/_authenticated/faculty/subjects/'
   fileRoutesById: FileRoutesById
 }
@@ -153,16 +176,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFacultySubjectsIndexRouteImport
       parentRoute: typeof AuthenticatedFacultyRoute
     }
+    '/_authenticated/faculty/subjects/$subjectId': {
+      id: '/_authenticated/faculty/subjects/$subjectId'
+      path: '/subjects/$subjectId'
+      fullPath: '/faculty/subjects/$subjectId'
+      preLoaderRoute: typeof AuthenticatedFacultySubjectsSubjectIdRouteImport
+      parentRoute: typeof AuthenticatedFacultyRoute
+    }
   }
 }
 
 interface AuthenticatedFacultyRouteChildren {
   AuthenticatedFacultyIndexRoute: typeof AuthenticatedFacultyIndexRoute
+  AuthenticatedFacultySubjectsSubjectIdRoute: typeof AuthenticatedFacultySubjectsSubjectIdRoute
   AuthenticatedFacultySubjectsIndexRoute: typeof AuthenticatedFacultySubjectsIndexRoute
 }
 
 const AuthenticatedFacultyRouteChildren: AuthenticatedFacultyRouteChildren = {
   AuthenticatedFacultyIndexRoute: AuthenticatedFacultyIndexRoute,
+  AuthenticatedFacultySubjectsSubjectIdRoute:
+    AuthenticatedFacultySubjectsSubjectIdRoute,
   AuthenticatedFacultySubjectsIndexRoute:
     AuthenticatedFacultySubjectsIndexRoute,
 }
