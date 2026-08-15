@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedFacultyRouteImport } from './routes/_authenticated/faculty'
 import { Route as AuthenticatedStudentRouteImport } from './routes/_authenticated/student'
 import { Route as AuthenticatedFacultyIndexRouteImport } from './routes/_authenticated/faculty.index'
+import { Route as AuthenticatedFacultySubjectsIndexRouteImport } from './routes/_authenticated/faculty.subjects.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,12 @@ const AuthenticatedFacultyIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedFacultyRoute,
   } as any)
+const AuthenticatedFacultySubjectsIndexRoute =
+  AuthenticatedFacultySubjectsIndexRouteImport.update({
+    id: '/subjects/',
+    path: '/subjects/',
+    getParentRoute: () => AuthenticatedFacultyRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,12 +60,14 @@ export interface FileRoutesByFullPath {
   '/faculty': typeof AuthenticatedFacultyRouteWithChildren
   '/student': typeof AuthenticatedStudentRoute
   '/faculty/': typeof AuthenticatedFacultyIndexRoute
+  '/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/student': typeof AuthenticatedStudentRoute
   '/faculty': typeof AuthenticatedFacultyIndexRoute
+  '/faculty/subjects': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +77,14 @@ export interface FileRoutesById {
   '/_authenticated/faculty': typeof AuthenticatedFacultyRouteWithChildren
   '/_authenticated/student': typeof AuthenticatedStudentRoute
   '/_authenticated/faculty/': typeof AuthenticatedFacultyIndexRoute
+  '/_authenticated/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/faculty' | '/student' | '/faculty/'
+  fullPaths:
+    '/' | '/auth' | '/faculty' | '/student' | '/faculty/' | '/faculty/subjects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/student' | '/faculty'
+  to: '/' | '/auth' | '/student' | '/faculty' | '/faculty/subjects'
   id:
     | '__root__'
     | '/'
@@ -82,6 +93,7 @@ export interface FileRouteTypes {
     | '/_authenticated/faculty'
     | '/_authenticated/student'
     | '/_authenticated/faculty/'
+    | '/_authenticated/faculty/subjects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -134,15 +146,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFacultyIndexRouteImport
       parentRoute: typeof AuthenticatedFacultyRoute
     }
+    '/_authenticated/faculty/subjects/': {
+      id: '/_authenticated/faculty/subjects/'
+      path: '/subjects'
+      fullPath: '/faculty/subjects/'
+      preLoaderRoute: typeof AuthenticatedFacultySubjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedFacultyRoute
+    }
   }
 }
 
 interface AuthenticatedFacultyRouteChildren {
   AuthenticatedFacultyIndexRoute: typeof AuthenticatedFacultyIndexRoute
+  AuthenticatedFacultySubjectsIndexRoute: typeof AuthenticatedFacultySubjectsIndexRoute
 }
 
 const AuthenticatedFacultyRouteChildren: AuthenticatedFacultyRouteChildren = {
   AuthenticatedFacultyIndexRoute: AuthenticatedFacultyIndexRoute,
+  AuthenticatedFacultySubjectsIndexRoute:
+    AuthenticatedFacultySubjectsIndexRoute,
 }
 
 const AuthenticatedFacultyRouteWithChildren =
