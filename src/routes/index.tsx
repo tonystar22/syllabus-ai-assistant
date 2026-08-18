@@ -25,6 +25,32 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+function SeedDemoButton() {
+  const seed = useServerFn(seedDemoAccounts);
+  const [busy, setBusy] = useState(false);
+  return (
+    <Button
+      size="lg"
+      variant="ghost"
+      disabled={busy}
+      onClick={async () => {
+        setBusy(true);
+        try {
+          await seed({ data: undefined });
+          toast.success("Demo accounts created. Use faculty@teachgen.demo / faculty123 or student@teachgen.demo / student123.");
+        } catch (e) {
+          toast.error(e instanceof Error ? e.message : "Failed to seed demo accounts");
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      {busy && <Loader2 className="mr-2 size-4 animate-spin" />}
+      Seed demo accounts
+    </Button>
+  );
+}
+
 const STEPS = [
   {
     icon: FileUp,
