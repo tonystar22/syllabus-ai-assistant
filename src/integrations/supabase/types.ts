@@ -244,6 +244,16 @@ export type Database = {
       owns_subject: { Args: { _subject_id: string }; Returns: boolean }
       owns_topic: { Args: { _topic_id: string }; Returns: boolean }
       owns_unit: { Args: { _unit_id: string }; Returns: boolean }
+      published_subjects: {
+        Args: never
+        Returns: {
+          code: string
+          department: string
+          id: string
+          name: string
+          semester: string
+        }[]
+      }
     }
     Enums: {
       app_role: "faculty" | "student"
