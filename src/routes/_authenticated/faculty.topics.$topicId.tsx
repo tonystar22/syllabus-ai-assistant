@@ -100,17 +100,19 @@ function TopicEditor() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const subjectId = topic.data?.unit?.subject_id;
+  const subjectId = topic.data?.unit?.subject_id ?? "";
 
   return (
     <>
-      <Link
-        to="/faculty/subjects/$subjectId"
-        params={{ subjectId }}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" /> Back to subject
-      </Link>
+      {subjectId ? (
+        <Link
+          to="/faculty/subjects/$subjectId"
+          params={{ subjectId }}
+          className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" /> Back to subject
+        </Link>
+      ) : null}
 
       <PageHeader
         title={topic.data?.title ?? "Topic"}
