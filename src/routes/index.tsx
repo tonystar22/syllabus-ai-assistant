@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, FileUp, GraduationCap, Sparkles } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
+import { ArrowRight, CheckCircle2, FileUp, GraduationCap, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { seedDemoAccounts } from "@/lib/demo-accounts.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
