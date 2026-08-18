@@ -89,6 +89,7 @@ function Landing() {
                   Login
                 </Link>
               </Button>
+              <SeedDemoButton />
             </div>
           </div>
 
