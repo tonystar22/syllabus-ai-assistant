@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, FileUp, GraduationCap, Sparkles } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
+import { ArrowRight, CheckCircle2, FileUp, GraduationCap, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { seedDemoAccounts } from "@/lib/demo-accounts.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,6 +24,32 @@ export const Route = createFileRoute("/")({
   }),
   component: Landing,
 });
+
+function SeedDemoButton() {
+  const seed = useServerFn(seedDemoAccounts);
+  const [busy, setBusy] = useState(false);
+  return (
+    <Button
+      size="lg"
+      variant="ghost"
+      disabled={busy}
+      onClick={async () => {
+        setBusy(true);
+        try {
+          const result = await seed();
+          toast.success(`Demo accounts ready: ${result.created.join(", ")}`);
+        } catch (e) {
+          toast.error(e instanceof Error ? e.message : "Failed to seed demo accounts");
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      {busy && <Loader2 className="mr-2 size-4 animate-spin" />}
+      Seed demo accounts
+    </Button>
+  );
+}
 
 const STEPS = [
   {
@@ -89,6 +119,7 @@ function Landing() {
                   Login
                 </Link>
               </Button>
+              <SeedDemoButton />
             </div>
           </div>
 

@@ -4,7 +4,7 @@ import type { LectureContent, PptContent } from "@/lib/types";
 
 export const processSyllabus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { subjectId: string; fileName: string; filePath: string; fileBase64: string }) => d)
+  .validator((d: { subjectId: string; fileName: string; filePath: string; fileBase64: string }) => d)
   .handler(async ({ data, context }) => {
     const { extractPdfText } = await import("@/lib/syllabus.server");
     const { callStructuredAI, syllabusSchema } = await import("@/lib/ai.server");
@@ -84,7 +84,7 @@ export const processSyllabus = createServerFn({ method: "POST" })
 
 export const generateLectureContent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { topicId: string }) => d)
+  .validator((d: { topicId: string }) => d)
   .handler(async ({ data, context }) => {
     const { callStructuredAI, lectureSchema, GROUNDING_RULES } = await import("@/lib/ai.server");
     const { loadTopicContext, saveGenerated } = await import("@/lib/generation.server");
@@ -117,7 +117,7 @@ Write structured lecture content for this topic only.`,
 
 export const generatePptContent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { topicId: string }) => d)
+  .validator((d: { topicId: string }) => d)
   .handler(async ({ data, context }) => {
     const { callStructuredAI, pptSchema, GROUNDING_RULES } = await import("@/lib/ai.server");
     const { loadTopicContext, saveGenerated } = await import("@/lib/generation.server");
