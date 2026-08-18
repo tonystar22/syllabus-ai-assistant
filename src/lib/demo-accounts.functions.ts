@@ -8,15 +8,12 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     { email: "student@teachgen.demo", password: "student123", name: "Demo Student", role: "student" },
   ] as const;
 
-  for (const acc of accounts) {
-    const { data: existing } = await supabaseAdmin.auth.admin.listUsers({
-      page: 1,
-      perPage: 1,
-      email: acc.email,
-    });
-    if (existing?.users?.length) continue;
+  const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  const existingEmails = new Set((list?.users ?? []).map((u) => u.email));
 
-    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+  for (const acc of accounts) {
+    if (existingEmails.has(acc.email)) continue;
+    const { error } = await supabaseAdmin.auth.admin.createUser({
       email: acc.email,
       password: acc.password,
       email_confirm: true,

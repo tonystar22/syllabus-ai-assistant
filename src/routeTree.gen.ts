@@ -17,6 +17,7 @@ import { Route as AuthenticatedStudentRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedFacultyIndexRouteImport } from './routes/_authenticated/faculty.index'
 import { Route as AuthenticatedFacultySubjectsIndexRouteImport } from './routes/_authenticated/faculty.subjects.index'
 import { Route as AuthenticatedFacultySubjectsSubjectIdRouteImport } from './routes/_authenticated/faculty.subjects.$subjectId'
+import { Route as AuthenticatedFacultyTopicsTopicIdRouteImport } from './routes/_authenticated/faculty.topics.$topicId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -60,6 +61,12 @@ const AuthenticatedFacultySubjectsSubjectIdRoute =
     path: '/subjects/$subjectId',
     getParentRoute: () => AuthenticatedFacultyRoute,
   } as any)
+const AuthenticatedFacultyTopicsTopicIdRoute =
+  AuthenticatedFacultyTopicsTopicIdRouteImport.update({
+    id: '/topics/$topicId',
+    path: '/topics/$topicId',
+    getParentRoute: () => AuthenticatedFacultyRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/student': typeof AuthenticatedStudentRoute
   '/faculty/': typeof AuthenticatedFacultyIndexRoute
   '/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
+  '/faculty/topics/$topicId': typeof AuthenticatedFacultyTopicsTopicIdRoute
   '/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +84,7 @@ export interface FileRoutesByTo {
   '/student': typeof AuthenticatedStudentRoute
   '/faculty': typeof AuthenticatedFacultyIndexRoute
   '/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
+  '/faculty/topics/$topicId': typeof AuthenticatedFacultyTopicsTopicIdRoute
   '/faculty/subjects': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +96,7 @@ export interface FileRoutesById {
   '/_authenticated/student': typeof AuthenticatedStudentRoute
   '/_authenticated/faculty/': typeof AuthenticatedFacultyIndexRoute
   '/_authenticated/faculty/subjects/$subjectId': typeof AuthenticatedFacultySubjectsSubjectIdRoute
+  '/_authenticated/faculty/topics/$topicId': typeof AuthenticatedFacultyTopicsTopicIdRoute
   '/_authenticated/faculty/subjects/': typeof AuthenticatedFacultySubjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/student'
     | '/faculty/'
     | '/faculty/subjects/$subjectId'
+    | '/faculty/topics/$topicId'
     | '/faculty/subjects/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/student'
     | '/faculty'
     | '/faculty/subjects/$subjectId'
+    | '/faculty/topics/$topicId'
     | '/faculty/subjects'
   id:
     | '__root__'
@@ -116,6 +128,7 @@ export interface FileRouteTypes {
     | '/_authenticated/student'
     | '/_authenticated/faculty/'
     | '/_authenticated/faculty/subjects/$subjectId'
+    | '/_authenticated/faculty/topics/$topicId'
     | '/_authenticated/faculty/subjects/'
   fileRoutesById: FileRoutesById
 }
@@ -183,12 +196,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFacultySubjectsSubjectIdRouteImport
       parentRoute: typeof AuthenticatedFacultyRoute
     }
+    '/_authenticated/faculty/topics/$topicId': {
+      id: '/_authenticated/faculty/topics/$topicId'
+      path: '/topics/$topicId'
+      fullPath: '/faculty/topics/$topicId'
+      preLoaderRoute: typeof AuthenticatedFacultyTopicsTopicIdRouteImport
+      parentRoute: typeof AuthenticatedFacultyRoute
+    }
   }
 }
 
 interface AuthenticatedFacultyRouteChildren {
   AuthenticatedFacultyIndexRoute: typeof AuthenticatedFacultyIndexRoute
   AuthenticatedFacultySubjectsSubjectIdRoute: typeof AuthenticatedFacultySubjectsSubjectIdRoute
+  AuthenticatedFacultyTopicsTopicIdRoute: typeof AuthenticatedFacultyTopicsTopicIdRoute
   AuthenticatedFacultySubjectsIndexRoute: typeof AuthenticatedFacultySubjectsIndexRoute
 }
 
@@ -196,6 +217,8 @@ const AuthenticatedFacultyRouteChildren: AuthenticatedFacultyRouteChildren = {
   AuthenticatedFacultyIndexRoute: AuthenticatedFacultyIndexRoute,
   AuthenticatedFacultySubjectsSubjectIdRoute:
     AuthenticatedFacultySubjectsSubjectIdRoute,
+  AuthenticatedFacultyTopicsTopicIdRoute:
+    AuthenticatedFacultyTopicsTopicIdRoute,
   AuthenticatedFacultySubjectsIndexRoute:
     AuthenticatedFacultySubjectsIndexRoute,
 }
