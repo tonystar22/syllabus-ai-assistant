@@ -8,7 +8,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
     { email: "student@teachgen.demo", password: "student123", name: "Demo Student", role: "student" },
   ] as const;
 
-  const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  const { data: list, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  if (listError) throw new Error(`listUsers failed: ${listError.message}`);
   const existingEmails = new Set((list?.users ?? []).map((u) => u.email));
 
   for (const acc of accounts) {
@@ -19,8 +20,8 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
       email_confirm: true,
       user_metadata: { name: acc.name, role: acc.role },
     });
-    if (error) throw error;
+    if (error) throw new Error(`createUser failed for ${acc.email}: ${error.message}`);
   }
 
-  return { ok: true };
+  return { ok: true, created: accounts.filter((a) => !existingEmails.has(a.email)).map((a) => a.email) };
 });
