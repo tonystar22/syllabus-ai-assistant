@@ -22,7 +22,7 @@ function StudentPortal() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("published_subjects");
       if (error) throw error;
-      return data as { id: string; name: string; code: string; department: string; semester: string }[];
+      return data;
     },
   });
 
