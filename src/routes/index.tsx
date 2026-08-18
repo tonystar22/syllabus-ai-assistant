@@ -36,8 +36,8 @@ function SeedDemoButton() {
       onClick={async () => {
         setBusy(true);
         try {
-          await seed({ data: undefined });
-          toast.success("Demo accounts created. Use faculty@teachgen.demo / faculty123 or student@teachgen.demo / student123.");
+          const result = await seed();
+          toast.success(`Demo accounts ready: ${result.created.join(", ")}`);
         } catch (e) {
           toast.error(e instanceof Error ? e.message : "Failed to seed demo accounts");
         } finally {
