@@ -56,7 +56,7 @@ function FacultyDashboard() {
   });
 
   const seedMutation = useMutation({
-    mutationFn: () => seed({ data: undefined }),
+    mutationFn: () => seed(),
     onSuccess: () => {
       toast.success("Demo subject added.");
       void qc.invalidateQueries({ queryKey: ["faculty-stats"] });
